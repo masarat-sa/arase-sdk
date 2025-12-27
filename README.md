@@ -47,10 +47,10 @@ console.log(results);
 
 ## Environment Variables | متغيرات البيئة
 
-| Variable | Description | الوصف |
-|----------|-------------|-------|
-| `ARASE_API_KEY` | Your API key (required) | مفتاح API الخاص بك (مطلوب) |
-| `ARASE_BASE_URL` | Custom API URL (optional) | رابط API مخصص (اختياري) |
+| Variable         | Description               | الوصف                      |
+| ---------------- | ------------------------- | -------------------------- |
+| `ARASE_API_KEY`  | Your API key (required)   | مفتاح API الخاص بك (مطلوب) |
+| `ARASE_BASE_URL` | Custom API URL (optional) | رابط API مخصص (اختياري)    |
 
 ## Features | الميزات
 
@@ -58,11 +58,11 @@ console.log(results);
 
 ```typescript
 const results = await client.search("أفضل المطاعم في الرياض", {
-  includeAnswer: true,  // إجابة AI
+  includeAnswer: true, // إجابة AI
   maxResults: 10,
 });
 
-console.log(results.answer);  // الإجابة
+console.log(results.answer); // الإجابة
 console.log(results.results); // النتائج
 ```
 
@@ -96,6 +96,66 @@ const papers = await client.searchScholar("artificial intelligence");
 console.log(papers.scholar);
 ```
 
+### Stock Market Search | بحث سوق الأسهم
+
+```typescript
+// Basic stock search | بحخ بسيط
+const stocks = await client.search("كم سعر سهم أرامكو؟", {
+  includeStocks: true,
+});
+
+if (stocks.stocks) {
+  stocks.stocks.results.forEach((stock) => {
+    console.log(`${stock.name}: ${stock.price} ${stock.currency}`);
+    console.log(`Change: ${stock.changePercent}%`);
+  });
+}
+
+// With AI summary (+1 request) | مع ملخص AI (+1 طلب)
+const stocksWithSummary = await client.search("Compare Aramco vs Al Rajhi", {
+  includeStocks: true,
+  options: {
+    stocks: {
+      summary: true,
+    },
+  },
+});
+
+console.log(stocksWithSummary.stocks?.summary);
+```
+
+### Weather Search | بحث الطقس
+
+```typescript
+// Basic weather | طقس بسيط
+const weather = await client.search("الطقس في جدة", {
+  includeWeather: true,
+});
+
+if (weather.weather) {
+  const { location, current, forecast } = weather.weather;
+  console.log(`${location.name}: ${current.tempC}°C, ${current.condition}`);
+
+  // Forecast | التوقعات
+  forecast.forEach((day) => {
+    console.log(`${day.date}: ${day.mintempC}°C - ${day.maxtempC}°C`);
+  });
+}
+
+// With AI summary and advice (+1 request) | مع ملخص ونصائح AI
+const weatherWithSummary = await client.search("Weather in Riyadh", {
+  includeWeather: true,
+  options: {
+    weather: {
+      summary: true,
+    },
+  },
+});
+
+console.log(weatherWithSummary.weather?.summary);
+console.log(weatherWithSummary.weather?.advice);
+```
+
 ### Content Extraction | استخراج المحتوى
 
 ```typescript
@@ -110,7 +170,7 @@ console.log(content.summary);
 
 ```typescript
 const results = await client.search("query", {
-  searchDepth: "deep",       // basic | advanced | deep
+  searchDepth: "deep", // basic | advanced | deep
   maxResults: 20,
   includeAnswer: true,
   includeImages: true,
@@ -119,8 +179,20 @@ const results = await client.search("query", {
   includePlaces: true,
   includeShopping: true,
   includeScholar: true,
-  topic: "general",          // general | news | academic
-  maxSteps: 3,               // للبحث العميق
+  includeStocks: true, // 🆕 Stock market data
+  includeWeather: true, // 🆕 Weather forecasts
+  topic: "general", // general | news | academic
+  maxSteps: 3, // للبحث العميق
+
+  // Optional AI summaries | ملخصات AI اختيارية
+  options: {
+    stocks: {
+      summary: true, // +1 request | +1 طلب
+    },
+    weather: {
+      summary: true, // +1 request | +1 طلب
+    },
+  },
 });
 ```
 
@@ -149,6 +221,10 @@ import type {
   SearchResponse,
   SearchResult,
   ImageResult,
+  StockResult, // 🆕 New: Stock data types
+  StocksResponse, // 🆕 New: Stock response
+  WeatherForecast, // 🆕 New: Weather forecast
+  WeatherResponse, // 🆕 New: Weather response
   // ... etc
 } from "arase";
 ```

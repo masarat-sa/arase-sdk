@@ -1,13 +1,13 @@
 /**
  * ARASE SDK - Official JavaScript/TypeScript SDK
  * حزمة اريز - مكتبة JavaScript/TypeScript الرسمية
- * 
+ *
  * The official SDK for integrating ARASE Search API into your applications.
  * الحزمة الرسمية لدمج واجهة برمجة تطبيقات اريز للبحث في تطبيقاتك.
  *
  * @packageDocumentation
  * @see https://arase.masarat.sa/docs
- * 
+ *
  * @example
  * ```typescript
  * // Import the client | استيراد العميل
@@ -33,11 +33,11 @@ export { AraseClient, AraseAPIError } from "./client";
 export type {
   // Client options | خيارات العميل
   AraseClientOptions,
-  
+
   // Search options and response | خيارات واستجابة البحث
   SearchOptions,
   SearchResponse,
-  
+
   // Result types | أنواع النتائج
   SearchResult,
   ImageResult,
@@ -46,11 +46,15 @@ export type {
   PlaceResult,
   ShoppingResult,
   ScholarResult,
-  
+  StockResult,
+  StocksResponse,
+  WeatherForecast,
+  WeatherResponse,
+
   // Extract options and response | خيارات واستجابة الاستخراج
   ExtractOptions,
   ExtractResponse,
-  
+
   // Error type | نوع الخطأ
   AraseError,
 } from "./types";
